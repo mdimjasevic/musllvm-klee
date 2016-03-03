@@ -15,7 +15,10 @@ architecture, based on the x86_64 version, but with all assembly replaced by llv
 More soon...
 
 
-
+## Recipe for libc.so.bc
 ```
-WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --prefix=<install dir>
+WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --target=LLVM --prefix=<install dir>
+make
+cd lib
+extract-bc libc.so
 ```
