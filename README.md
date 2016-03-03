@@ -16,3 +16,6 @@ More soon...
 
 
 
+```
+WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --prefix=<install dir>
+```
