@@ -11,14 +11,11 @@ musl libc, motiviated in a simliar fashion to [Klee's uclibc](https://github.com
 Our approach here will be to [port musl libc](http://wiki.musl-libc.org/wiki/Porting) to a new
 architecture, based on the x86_64 version, but with all assembly replaced by llvm bitcode.
 
-
-More soon...
-
-
 ## Recipe for libc.so.bc
 ```
 WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --target=LLVM --prefix=<install dir>
 make
 cd lib
 extract-bc libc.so
+cp libc.so.bc  <wherever you want your bitcode library to live>
 ```
