@@ -1,0 +1,14 @@
+llc -filetype=obj libc.so.bc
+
+clang libc.so.o  ../obj/src/setjmp/LLVM/*.o
+
+libc.so.bc:(.text+0x75a7): undefined reference to `__set_thread_area'
+libc.so.bc:(.text+0x86c9): undefined reference to `__syscall'
+libc.so.bc:(.text+0x2c6b4): undefined reference to `__clone'
+libc.so.bc:(.text+0x43d70): undefined reference to `__syscall_cp_asm'
+libc.so.bc:(.text+0x43e97): undefined reference to `__cp_begin'
+libc.so.bc:(.text+0x43ea1): undefined reference to `__cp_end'
+libc.so.bc:(.text+0x43eb1): undefined reference to `__cp_cancel'
+libc.so.bc:(.text+0x44837): undefined reference to `__unmapself'
+
+/usr/bin/ld: a.out: protected symbol `__unmapself' isn't defined

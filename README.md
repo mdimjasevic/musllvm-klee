@@ -9,7 +9,7 @@ The idea is to produce a, complete as possible, LLVM bitcode version of
 musl libc, motiviated in a simliar fashion to [Klee's uclibc](https://github.com/klee/klee-uclibc).
 
 Our approach here will be to [port musl libc](http://wiki.musl-libc.org/wiki/Porting) to a new
-architecture, based on the x86_64 version, but with all assembly replaced by llvm bitcode.
+architecture, based on the x86_64 version, but with all assembly replaced by llvm bitcode (maybe).
 
 ## Recipe for libc.so.bc
 ```
