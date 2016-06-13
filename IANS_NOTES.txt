@@ -1,6 +1,6 @@
 llc -filetype=obj libc.so.bc
 
-clang libc.so.o  ../obj/src/setjmp/LLVM/*.o
+clang libc.so.o  ../obj/src/setjmp/LLVM/*.o ../obj/src/thread/LLVM/__set_thread_area.o ../obj/src/internal/LLVM/syscall.o ../obj/src/thread/LLVM/clone.o ../obj/src/thread/LLVM/syscall_cp.o ../obj/src/thread/LLVM/__unmapself.o crt1.o
 
 libc.so.bc:(.text+0x75a7): undefined reference to `__set_thread_area'
 ../obj/src/thread/LLVM/__set_thread_area.o
