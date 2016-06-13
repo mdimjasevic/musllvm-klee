@@ -12,6 +12,10 @@ Our approach here will be to [port musl libc](http://wiki.musl-libc.org/wiki/Por
 architecture, based on the x86_64 version, but with all assembly replaced by llvm bitcode (maybe).
 
 ## Recipe for libc.so.bc
+
+Install [wllvm.](https://github.com/SRI-CSL/whole-program-llvm.git)
+Then:
+
 ```
 WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --target=LLVM --prefix=<install dir>
 make
