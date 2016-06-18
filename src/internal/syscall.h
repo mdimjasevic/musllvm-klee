@@ -21,7 +21,7 @@ __attribute__((visibility("hidden")))
 long __syscall_ret(unsigned long), __syscall(syscall_arg_t, ...),
 	__syscall_cp(syscall_arg_t, syscall_arg_t, syscall_arg_t, syscall_arg_t,
 	             syscall_arg_t, syscall_arg_t, syscall_arg_t);
-
+#define SYSCALL_NO_INLINE
 #ifdef SYSCALL_NO_INLINE
 #define __syscall0(n) (__syscall)(n)
 #define __syscall1(n,a) (__syscall)(n,__scc(a))
