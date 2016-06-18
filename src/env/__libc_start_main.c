@@ -56,6 +56,7 @@ void __init_libc(char **envp, char *pn)
 static void libc_start_init(void)
 {
 	_init();
+	return;
 	uintptr_t a = (uintptr_t)&__init_array_start;
 	for (; a<(uintptr_t)&__init_array_end; a+=sizeof(void(*)()))
 		(*(void (**)())a)();
