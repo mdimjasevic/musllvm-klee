@@ -7,7 +7,7 @@
 #define HIGHS (ONES * (UCHAR_MAX/2+1))
 #define HASZERO(x) ((x)-ONES & ~(x) & HIGHS)
 
-size_t strlen(const char *s)
+size_t strlen_fast(const char *s)
 {
 	const char *a = s;
 	const size_t *w;
@@ -15,4 +15,13 @@ size_t strlen(const char *s)
 	for (w = (const void *)s; !HASZERO(*w); w++);
 	for (s = (const void *)w; *s; s++);
 	return s-a;
+}
+
+size_t strlen(const char *s)
+{
+  const char *a = s;
+  const size_t *w;
+  for (; (uintptr_t)s % ALIGN; s++) if (!*s) return s-a;
+  for (; *s; s++);
+  return s-a;
 }
