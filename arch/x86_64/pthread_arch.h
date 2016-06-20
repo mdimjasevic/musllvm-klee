@@ -6,7 +6,7 @@ static inline struct pthread *__pthread_self()
 	return self;
 }
 */
-extern struct pthread *__pthread_self();
+struct pthread *__pthread_self();
 
 #define TP_ADJ(p) (p)
 
