@@ -2,13 +2,16 @@
 #include <fcntl.h>
 #include <string.h>
 
+extern __typeof(open) __libc_open;
+extern __typeof(fcntl) __libc_fcntl;
+
 FILE *__fopen_rb_ca(const char *filename, FILE *f, unsigned char *buf, size_t len)
 {
 	memset(f, 0, sizeof *f);
 
-	f->fd = sys_open(filename, O_RDONLY|O_CLOEXEC);
+	f->fd = __libc_open(filename, O_RDONLY|O_CLOEXEC);
 	if (f->fd < 0) return 0;
-	__syscall(SYS_fcntl, f->fd, F_SETFD, FD_CLOEXEC);
+	__libc_fcntl(f->fd, F_SETFD, FD_CLOEXEC);
 
 	f->flags = F_NOWR | F_PERM;
 	f->buf = buf + UNGET;
