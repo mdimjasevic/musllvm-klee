@@ -50,7 +50,7 @@ You can also do things like:
 llvm-link nweb.bc libc.so.bc -o nweb_app.bc
 opt -O3 nweb_app.bc
 llc -filetype=obj nweb_app.bc
-clang -static -notstdlib nweb.o libc.so.o crt1.o libc.a -o nweb
+clang -static -notstdlib nweb_app.o crt1.o libc.a -o nweb
 ```
 
 
