@@ -53,7 +53,5 @@ llc -filetype=obj nweb_app.bc
 clang -static -notstdlib nweb.o libc.so.o crt1.o libc.a -o nweb
 ```
 
-Blame @ianamason for this recipe.
-
 
 
