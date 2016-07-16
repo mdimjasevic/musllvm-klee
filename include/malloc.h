@@ -18,6 +18,8 @@ void *memalign(size_t, size_t);
 
 size_t malloc_usable_size(void *);
 
+void malloc_stats(void);
+
 #ifdef __cplusplus
 }
 #endif

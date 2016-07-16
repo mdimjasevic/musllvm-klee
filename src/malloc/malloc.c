@@ -519,3 +519,8 @@ void free(void *p)
 
 	unlock_bin(i);
 }
+
+
+void malloc_stats(void){
+  //iam: coming soonish
+}
