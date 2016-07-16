@@ -36,7 +36,7 @@ then you can do:
 ```
 llc -filetype=obj nweb.bc
 llc -filetype=obj libc.so.bc
-clang -static -notstdlib nweb.o libc.so.o crt1.o libc.a -o nweb
+clang -static -nostdlib nweb.o libc.so.o crt1.o libc.a -o nweb
 ```
 and get a working executable. The use of `llc` is optional in principle,
 but my `clang` (3.5) crashes on the `libc.so.bc`. You will find
@@ -50,7 +50,7 @@ You can also do things like:
 llvm-link nweb.bc libc.so.bc -o nweb_app.bc
 opt -O3 nweb_app.bc
 llc -filetype=obj nweb_app.bc
-clang -static -notstdlib nweb_app.o crt1.o libc.a -o nweb
+clang -static -nostdlib nweb_app.o crt1.o libc.a -o nweb
 ```
 
 
