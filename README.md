@@ -30,7 +30,7 @@ cp libc.so.bc  <wherever you want your bitcode library to live>
 Suppose you have an application built,  `nweb.bc` say.  Build
 the `libc.so.bc` via the above with the additional tweak/hack:
 ```
-CFLAGS="-DSRI_TLS_HACK"
+CFLAGS="-DSRI_TLS_HACK"  make
 ```
 then you can do:
 ```
