@@ -25,7 +25,7 @@ cp libc.so.bc  <wherever you want your bitcode library to live>
 ```
 
 
-## @ianamason's notes on using the bitcode
+## Ian's notes on using the bitcode
 
 Suppose you have an application built,  `nweb.bc` say.  Build
 the `libc.so.bc` via the above with the additional tweak/hack:
@@ -53,6 +53,7 @@ llc -filetype=obj nweb_app.bc
 clang -static -notstdlib nweb.o libc.so.o crt1.o libc.a -o nweb
 ```
 
+Blame @ianamason for this recipe.
 
 
 
