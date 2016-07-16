@@ -23,3 +23,36 @@ cd lib
 extract-bc libc.so
 cp libc.so.bc  <wherever you want your bitcode library to live>
 ```
+
+
+## @ianamason's notes on using the bitcode
+
+Suppose you have an application built,  `nweb.bc` say.  Build
+the `libc.so.bc` via the above with the additional tweak/hack:
+```
+CFLAGS="-DSRI_TLS_HACK"
+```
+then you can do:
+```
+llc -filetype=obj nweb.bc
+llc -filetype=obj libc.so.bc
+clang -static -notstdlib nweb.o libc.so.o crt1.o libc.a -o nweb
+```
+and get a working executable. The use of `llc` is optional in principle,
+but my `clang` (3.5) crashes on the `libc.so.bc`. You will find
+`crt1.o` and  `libc.a` in the same directory you found the `libc.so`.
+Of course this is not very interesting unless you have some fun
+with the bitcode before the final linking.
+
+You can also do things like:
+
+```
+llvm-link nweb.bc libc.so.bc -o nweb_app.bc
+opt -O3 nweb_app.bc
+llc -filetype=obj nweb_app.bc
+clang -static -notstdlib nweb.o libc.so.o crt1.o libc.a -o nweb
+```
+
+
+
+
