@@ -71,7 +71,11 @@ typedef Elf32_Phdr Phdr;
 typedef Elf64_Phdr Phdr;
 #endif
 
+#ifdef SRI_TLS_HACK
+void static_init_tls(size_t *aux)
+#else
 static void static_init_tls(size_t *aux)
+#endif
 {
 	unsigned char *p;
 	size_t n;

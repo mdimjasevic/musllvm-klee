@@ -30,7 +30,7 @@ cp libc.so.bc  <wherever you want your bitcode library to live>
 Suppose you have an application built,  `nweb.bc` say.  Build
 the `libc.so.bc` via the above with the additional tweak/hack:
 ```
-CFLAGS="-DSRI_TLS_HACK"  make
+make CFLAGS="-DSRI_TLS_HACK"  
 ```
 then you can do:
 ```
@@ -48,8 +48,8 @@ You can also do things like:
 
 ```
 llvm-link nweb.bc libc.so.bc -o nweb_app.bc
-opt -O3 nweb_app.bc
-llc -filetype=obj nweb_app.bc
+opt -O3 nweb_app.bc -o nweb_app_o3.bc
+llc -filetype=obj nweb_app_o3.bc
 clang -static -nostdlib nweb_app.o crt1.o libc.a -o nweb
 ```
 
