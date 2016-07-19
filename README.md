@@ -53,5 +53,9 @@ llc -filetype=obj nweb_app_o3.bc
 clang -static -nostdlib nweb_app.o crt1.o libc.a -o nweb
 ```
 
+P.S. Seems like you can avoid the `SRI_TLS_HACK` by working with the
+`libc.a.bc` rather than the `libc.so.bc`. I may make this 
+easier to construct once I hear back from the wllvm users/developers.
+
 
 
