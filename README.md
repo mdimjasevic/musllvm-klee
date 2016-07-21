@@ -28,7 +28,7 @@ cp libc.a.bc  <wherever you want your bitcode library to live>
 ## Ian's notes on using the bitcode
 
 Suppose you have an application built,  `nweb.bc` say.  
-Yhen you can do:
+Then you can do:
 ```
 llc -filetype=obj nweb.bc
 llc -filetype=obj libc.a.bc
