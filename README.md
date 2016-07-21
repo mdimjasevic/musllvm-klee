@@ -20,42 +20,31 @@ Then:
 WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --target=LLVM --prefix=<install dir>
 make
 cd lib
-extract-bc libc.so
-cp libc.so.bc  <wherever you want your bitcode library to live>
+extract-bc -b libc.a
+cp libc.a.bc  <wherever you want your bitcode library to live>
 ```
 
 
 ## Ian's notes on using the bitcode
 
-Suppose you have an application built,  `nweb.bc` say.  Build
-the `libc.so.bc` via the above with the additional tweak/hack:
-```
-make CFLAGS="-DSRI_TLS_HACK"  
-```
-then you can do:
+Suppose you have an application built,  `nweb.bc` say.  
+Yhen you can do:
 ```
 llc -filetype=obj nweb.bc
-llc -filetype=obj libc.so.bc
-clang -static -nostdlib nweb.o libc.so.o crt1.o libc.a -o nweb
+llc -filetype=obj libc.a.bc
+clang -static -nostdlib nweb.o libc.a.o crt1.o libc.a -o nweb
 ```
 and get a working executable. The use of `llc` is optional in principle,
-but my `clang` (3.5) crashes on the `libc.so.bc`. You will find
-`crt1.o` and  `libc.a` in the same directory you found the `libc.so`.
+but my `clang` (3.5) crashes on the `libc.a.bc`. You will find
+`crt1.o` and  `libc.a` in the same directory you produced `libc.a.bc`.
 Of course this is not very interesting unless you have some fun
 with the bitcode before the final linking.
 
 You can also do things like:
 
 ```
-llvm-link nweb.bc libc.so.bc -o nweb_app.bc
+llvm-link nweb.bc libc.a.bc -o nweb_app.bc
 opt -O3 nweb_app.bc -o nweb_app_o3.bc
 llc -filetype=obj nweb_app_o3.bc
 clang -static -nostdlib nweb_app.o crt1.o libc.a -o nweb
 ```
-
-P.S. Seems like you can avoid the `SRI_TLS_HACK` by working with the
-`libc.a.bc` rather than the `libc.so.bc`. I may make this 
-easier to construct once I hear back from the wllvm users/developers.
-
-
-

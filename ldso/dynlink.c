@@ -1251,17 +1251,9 @@ static void dl_debug_state(void)
 
 weak_alias(dl_debug_state, _dl_debug_state);
 
-#ifdef SRI_TLS_HACK
-void static_init_tls(size_t *);
-void __init_tls(size_t *auxv)
-{
-  static_init_tls(auxv);
-}
-#else
 void __init_tls(size_t *auxv)
 {
 }
-#endif
 
 __attribute__((__visibility__("hidden")))
 void *__tls_get_new(size_t *v)
