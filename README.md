@@ -9,7 +9,9 @@ The idea is to produce a, complete as possible, LLVM bitcode version of
 musl libc, motiviated in a simliar fashion to [Klee's uclibc](https://github.com/klee/klee-uclibc).
 
 Our approach here will be to [port musl libc](http://wiki.musl-libc.org/wiki/Porting) to a new
-architecture, based on the x86_64 version, but with all assembly replaced by llvm bitcode (maybe).
+architecture, based on the x86_64 version, but with all assembly replaced by llvm bitcode (maybe). At the moment `--target=LLVM` behaves more like a `--no-asm`
+switch, eliminating all the asm for which there are vanilla C definitions.
+
 
 ## Recipe for libc.so.bc
 
@@ -38,7 +40,7 @@ and get a working executable. The use of `llc` is optional in principle,
 but my `clang` (3.5) crashes on the `libc.a.bc`. You will find
 `crt1.o` and  `libc.a` in the same directory you produced `libc.a.bc`.
 Of course this is not very interesting unless you have some fun
-with the bitcode before the final linking.
+with the bitcode before this final linking phase.
 
 You can also do things like:
 
