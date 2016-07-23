@@ -28,8 +28,9 @@ cp libc.a.bc  <wherever you want your static bitcode library to live>
 extract-bc libc.so
 cp libc.so.bc  <wherever you want your shared bitcode library to live>
 ```
-Note the `--bitcode` option is a recent addition to `wllvm` and
-only available in [SRI's fork](https://github.com/SRI-CSL/whole-program-llvm). 
+Note the `--bitcode` option is a recent addition to `wllvm` and currently
+only available in [SRI's fork](https://github.com/SRI-CSL/whole-program-llvm),
+I will eventually push it up stream, but have not yet. 
 
 ## Ian's notes on using the bitcode
 
