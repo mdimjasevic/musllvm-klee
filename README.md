@@ -83,13 +83,13 @@ which it gets from `ldso/dynlink.c`. The actual definition that is needed is
 `static_init_tls` which is a weak alias defined in `src/env/__init_tls.c`.
 The static library `libc.a` is set up correctly:
 ```
- nm libc.a | grep init_tls
+> nm libc.a | grep init_tls
 __init_tls.o:
 0000000000000000 W __init_tls
 0000000000000000 t static_init_tls
                  U __init_tls
 ```
 whereas the Frankenstein
-one gets by linking `libc.so.bc` with `libc.a` is not. The `SIGSEGV`
+one gets by linking a dynamic object `libc.so.bc` with a static object `libc.a` is not. The `SIGSEGV`
 occurs because of this problematic uninitialized thread local storage.
 
