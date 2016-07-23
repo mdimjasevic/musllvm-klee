@@ -30,7 +30,7 @@ cp libc.so.bc  <wherever you want your shared bitcode library to live>
 ```
 Note the `--bitcode` option is a recent addition to `wllvm` and currently
 only available in [SRI's fork](https://github.com/SRI-CSL/whole-program-llvm),
-I (@ianamason) will eventually push it up stream, but have not yet. 
+I will eventually push it up stream, but have not yet. 
 
 ## Ian's notes on using the bitcode
 
