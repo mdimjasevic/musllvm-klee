@@ -32,7 +32,7 @@ Note the `--bitcode` option is a recent addition to `wllvm` and currently
 only available in [SRI's fork](https://github.com/SRI-CSL/whole-program-llvm),
 I will eventually push it up stream, but have not yet. 
 
-## Ian's notes on using the bitcode
+## Ian's notes on what to do with the bitcode
 
 Suppose you have an application built,  `nweb.bc` say.  
 Then you can do:
@@ -66,3 +66,30 @@ opt -O3 nweb_app.bc -o nweb_app_o3.bc
 llc -filetype=obj nweb_app_o3.bc
 clang -static -nostdlib nweb_app.o crt1.o libc.a -o nweb
 ```
+
+## Ian's notes on what NOT to do with the bitcode
+
+
+I guess pointing out things that don't work might also illucidate things, especially
+if I can explain why they don't work.
+This does not work:
+```
+clang -static -nostdlib nweb.bc libc.so.bc crt1.o libc.a -o nweb
+```
+It links without warnings, but crashes on running. The reason it crashes on running
+is that `libc.so.bc` contains an empty definition of the thread local storage
+initializer, `__init_tls`,
+which it gets from `ldso/dynlink.c`. The actual definition that is needed is
+`static_init_tls` which is a weak alias defined in `src/env/__init_tls.c`.
+The static library `libc.a` is set up correctly:
+```
+ nm libc.a | grep init_tls
+__init_tls.o:
+0000000000000000 W __init_tls
+0000000000000000 t static_init_tls
+                 U __init_tls
+```
+whereas the Frankenstein
+one gets by linking `libc.so.bc` with `libc.a` is not. The `SIGSEGV`
+occurs because of this problematic uninitialized thread local storage.
+
