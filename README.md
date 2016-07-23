@@ -23,12 +23,13 @@ Then:
 WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --target=LLVM --prefix=<install dir>
 make
 cd lib
-extract-bc -b libc.a
+extract-bc --bitcode libc.a
 cp libc.a.bc  <wherever you want your static bitcode library to live>
 extract-bc libc.so
 cp libc.so.bc  <wherever you want your shared bitcode library to live>
 ```
-
+Note the `--bitcode` option is a recent addition to `wllvm` and
+only available in [SRI's fork](https://github.com/SRI-CSL/whole-program-llvm). 
 
 ## Ian's notes on using the bitcode
 
