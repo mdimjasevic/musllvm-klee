@@ -9,7 +9,8 @@ The idea is to produce a, complete as possible, LLVM bitcode version of
 musl libc, motiviated in a simliar fashion to [Klee's uclibc](https://github.com/klee/klee-uclibc).
 
 Our approach here will be to [port musl libc](http://wiki.musl-libc.org/wiki/Porting) to a new
-architecture, based on the x86_64 version, but with all assembly replaced by llvm bitcode (maybe). At the moment `--target=LLVM` behaves more like a `--no-asm`
+architecture, based on the x86_64 version, but with all assembly replaced by llvm bitcode (maybe).
+At the moment `--target=LLVM` behaves more like a `--no-asm`
 switch, eliminating all the asm for which there are vanilla C definitions.
 
 
@@ -32,13 +33,25 @@ cp libc.a.bc  <wherever you want your bitcode library to live>
 Suppose you have an application built,  `nweb.bc` say.  
 Then you can do:
 ```
+clang -static -nostdlib nweb.bc libc.a.bc crt1.o libc.a -o nweb
+```
+or
+```
 llc -filetype=obj nweb.bc
 llc -filetype=obj libc.a.bc
 clang -static -nostdlib nweb.o libc.a.o crt1.o libc.a -o nweb
 ```
 and get a working executable. The use of `llc` is optional in principle,
-but my `clang` (3.5) crashes on the `libc.a.bc`. You will find
+but my `clang` (3.5) crashes on some large `.bc` files. You will find
 `crt1.o` and  `libc.a` in the same directory you produced `libc.a.bc`.
+
+The `crt1.o` is needed to provide the definition of the entry symbol `__start`.
+While the `libc.a` archive is required to provide the definitions of those things
+that do not have C definitions associated with them, i.e. are written in
+asm. Examples of the later are `__clone`, `__syscall`, `setjmp` and`longjmp`.
+
+
+
 Of course this is not very interesting unless you have some fun
 with the bitcode before this final linking phase.
 
