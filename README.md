@@ -47,8 +47,8 @@ but my `clang` (3.5) crashes on some large `.bc` files. You will find
 
 The `crt1.o` is needed to provide the definition of the entry symbol `__start`.
 While the `libc.a` archive is required to provide the definitions of those things
-that do not have C definitions associated with them, i.e. are written in
-asm. Examples of the later are `__clone`, `__syscall`, `setjmp` and`longjmp`.
+that do not have `C` (or `C++`) definitions, i.e. are written in
+asm. Examples of the later are `__clone`, `__syscall`, `setjmp` and `longjmp`.
 
 
 
