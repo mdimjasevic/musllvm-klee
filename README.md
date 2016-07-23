@@ -11,7 +11,7 @@ musl libc, motiviated in a simliar fashion to [Klee's uclibc](https://github.com
 Our approach here will be to [port musl libc](http://wiki.musl-libc.org/wiki/Porting) to a new
 architecture, based on the x86_64 version, but with all assembly replaced by llvm bitcode (maybe).
 At the moment `--target=LLVM` behaves more like a `--no-asm`
-switch, eliminating all the asm for which there are vanilla C definitions.
+switch, eliminating all the assembly for which there are vanilla C definitions.
 
 
 ## Recipe for libc.so.bc
@@ -24,7 +24,9 @@ WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --target=LLVM --prefix=<install dir
 make
 cd lib
 extract-bc -b libc.a
-cp libc.a.bc  <wherever you want your bitcode library to live>
+cp libc.a.bc  <wherever you want your static bitcode library to live>
+extract-bc libc.so
+cp libc.so.bc  <wherever you want your shared bitcode library to live>
 ```
 
 
@@ -48,8 +50,7 @@ but my `clang` (3.5) crashes on some large `.bc` files. You will find
 The `crt1.o` is needed to provide the definition of the entry symbol `__start`.
 While the `libc.a` archive is required to provide the definitions of those things
 that do not have `C` (or `C++`) definitions, i.e. are written in
-asm. Examples of the later are `__clone`, `__syscall`, `setjmp` and `longjmp`.
-
+assembly. Examples of the later are `__clone`, `__syscall`, `setjmp` and `longjmp`.
 
 
 Of course this is not very interesting unless you have some fun
