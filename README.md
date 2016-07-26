@@ -55,6 +55,9 @@ While the `libc.a` archive is required to provide the definitions of those thing
 that do not have `C` (or `C++`) definitions, i.e. are written in
 assembly. Examples of the later are `__clone`, `__syscall`, `setjmp` and `longjmp`.
 
+**Note Bene:** the above works for `llvm-3.5`, for `llvm-3.8` you need to `locate`
+your system `libgcc.a` and add that to the list. When I figure out how to use 
+`compiler-rt` to get around that I will mention it here.
 
 Of course this is not very interesting unless you have some fun
 with the bitcode before this final linking phase.
