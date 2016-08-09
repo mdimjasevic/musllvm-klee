@@ -21,7 +21,7 @@ Install [wllvm.](https://github.com/SRI-CSL/whole-program-llvm.git)
 Then:
 
 ```
-WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --target=LLVM --build==LLVM --prefix=<install dir>
+WLLVM_CONFIGURE_ONLY=1  CC=wllvm ./configure --target=LLVM --build=LLVM --prefix=<install dir>
 make
 cd lib
 extract-bc --bitcode libc.a
