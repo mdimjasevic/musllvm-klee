@@ -1,17 +1,18 @@
-= Building musl libc for KLEE
+# Building musl libc for KLEE
 
-Requirements:
+## Requirements:
+
 * Beside the build requirements for musl you'll need whole-program-llvm
 
-Steps:
+## Steps:
 
-* ./configure --disable-shared --enable-debug CC={{PATH_TO}}/whole-program-llvm/wllvm
-* make CC={{PATH_TO}}/whole-program-llvm/wllvm
+* `./configure --disable-shared --enable-debug CC={{PATH_TO}}/whole-program-llvm/wllvm`
+* `make CC={{PATH_TO}}/whole-program-llvm/wllvm`
 
-* Remove functions we cannot use yet or we have to replace:
-ar -d musl/lib/libc.a {{FUNCTION}}
+* Remove functions we cannot use yet or we have to replace from the built library:
+`ar -d musl/lib/libc.a {{FUNCTION/FILE}}`
 
-      # Following functions are already defined in the POSIX layer
+      ## Following functions are already defined in the POSIX layer
       - readlink.o
       - stat.o
       - fstat.o
@@ -78,6 +79,6 @@ ar -d musl/lib/libc.a {{FUNCTION}}
       - clone.o
       
 * Remove the bitcode library
-  rm musl/lib/libc.bca
-* {{PATH_TO}}/whole-program-llvm/extract-bc lib/libc.a
+  `rm musl/lib/libc.bca`
+* `{{PATH_TO}}/whole-program-llvm/extract-bc lib/libc.a`
 
