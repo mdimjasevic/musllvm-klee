@@ -48,7 +48,7 @@
       - memmove.o
       - llrintf.o
       - log10l.o
-            - expl.o
+      - expl.o
       - llrintl.o
       - fabsl.o
       - setjmp.o
