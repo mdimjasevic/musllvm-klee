@@ -1,0 +1,76 @@
+#!/usr/bin/env make -f
+
+IN_KLEE		?= readlink.o		\
+			stat.o		\
+			fstat.o		\
+			utimes.o	\
+			lstat.o		\
+			malloc.o	\
+			fcntl.o		\
+			open.o		\
+			ioctl.o		\
+			printf.o	\
+			vprintf.o	\
+			read.o		\
+			close.o		\
+			lseek.o		\
+			getdents.o	\
+			__getdents.o	\
+			write.o
+
+ASM_ONLY	?= lrintl.o	\
+			sqrt.o		\
+			sigsetjmp.o	\
+			fabs.o		\
+			dlsym.o		\
+			fmodl.o		\
+			truncl.o	\
+			expm1l.o	\
+			memset.o	\
+			ceill.o		\
+			lrint.o		\
+			restore.o	\
+			vfork.o		\
+			log2l.o		\
+			memmove.o	\
+			llrintf.o	\
+			log10l.o	\
+			expl.o		\
+			llrintl.o	\
+			fabsl.o		\
+			setjmp.o	\
+			lrintf.o	\
+			lrintl.o	\
+			rintl.o		\
+			fenv.o		\
+			llrint.o	\
+			sqrtf.o		\
+			syscall_cp.o	\
+			sqrtl.o		\
+			remainderl.o	\
+			asinl.o		\
+			exp2l.o		\
+			__invtrigl.o	\
+			log1pl.o	\
+			floorl.o	\
+			logl.o		\
+			memcpy.o	\
+			fabsf.o		\
+			atan2l.o	\
+			tlsdesc.o	\
+			longjmp.o	\
+			clone.o		\
+			atanl.o		\
+			acosl.o		\
+			__unmapself.o	\
+			clone.o
+
+OBJS		= $(IN_KLEE) $(ASM_ONLY)
+
+LIB_ARCHIVE	= lib/libc.a
+LIB_BC_ARCHIVE	= $(patsubst %.a,%.bca,$(LIB_ARCHIVE))
+
+all:
+	$(foreach OBJ,$(OBJS),ar d $(LIB_ARCHIVE) $(OBJ);)
+	rm -f $(LIB_BC_ARCHIVE)
+	extract-bc $(LIB_ARCHIVE)
