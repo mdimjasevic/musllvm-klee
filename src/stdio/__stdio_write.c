@@ -1,9 +1,39 @@
 #include "stdio_impl.h"
 #include <sys/uio.h>
 
+size_t write(int fd, const void *buf, size_t count);
+
+ssize_t writev(int fd, const struct iovec *iov, int iovcnt){
+  ssize_t cnt = 0, cnt2;
+  if (iovcnt == 0)
+    return 0;
+  while (iovcnt--) {
+    // Check if the buffer has space
+    if (iov->iov_len == 0){
+      iov++;
+      continue;
+    }
+
+    cnt2 = write(fd, iov->iov_base, iov->iov_len);
+
+    // Check for error and return
+    if (cnt2 < 0)
+      return cnt2;
+
+    cnt += cnt2;
+    // Check for less characters than sie of the buffer
+    // Break in that case
+    if (cnt < iov->iov_len)
+      break;
+    iov++;
+  }
+
+  return cnt;
+}
+
 size_t __stdio_write(FILE *f, const unsigned char *buf, size_t len)
 {
-	struct iovec iovs[2] = {
+  struct iovec iovs[2] = {
 		{ .iov_base = f->wbase, .iov_len = f->wpos-f->wbase },
 		{ .iov_base = (void *)buf, .iov_len = len }
 	};
@@ -12,7 +42,7 @@ size_t __stdio_write(FILE *f, const unsigned char *buf, size_t len)
 	int iovcnt = 2;
 	ssize_t cnt;
 	for (;;) {
-		cnt = syscall(SYS_writev, f->fd, iov, iovcnt);
+	  cnt = writev(f->fd, iov, iovcnt);
 		if (cnt == rem) {
 			f->wend = f->buf + f->buf_size;
 			f->wpos = f->wbase = f->buf;

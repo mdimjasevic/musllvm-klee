@@ -5,6 +5,8 @@
 #include <errno.h>
 #include <string.h>
 
+extern __typeof(fcntl) __libc_fcntl;
+
 FILE *__fdopen(int fd, const char *mode)
 {
 	FILE *f;
@@ -26,13 +28,13 @@ FILE *__fdopen(int fd, const char *mode)
 	if (!strchr(mode, '+')) f->flags = (*mode == 'r') ? F_NOWR : F_NORD;
 
 	/* Apply close-on-exec flag */
-	if (strchr(mode, 'e')) __syscall(SYS_fcntl, fd, F_SETFD, FD_CLOEXEC);
+	if (strchr(mode, 'e')) __libc_fcntl(fd, F_SETFD, FD_CLOEXEC);
 
 	/* Set append mode on fd if opened for append */
 	if (*mode == 'a') {
-		int flags = __syscall(SYS_fcntl, fd, F_GETFL);
+		int flags = __libc_fcntl(fd, F_GETFL);
 		if (!(flags & O_APPEND))
-			__syscall(SYS_fcntl, fd, F_SETFL, flags | O_APPEND);
+			__libc_fcntl(fd, F_SETFL, flags | O_APPEND);
 		f->flags |= F_APP;
 	}
 
@@ -42,7 +44,7 @@ FILE *__fdopen(int fd, const char *mode)
 
 	/* Activate line buffered mode for terminals */
 	f->lbf = EOF;
-	if (!(f->flags & F_NOWR) && !__syscall(SYS_ioctl, fd, TIOCGWINSZ, &wsz))
+	if (!(f->flags & F_NOWR) && !ioctl(fd, TIOCGWINSZ, &wsz))
 		f->lbf = '\n';
 
 	/* Initialize op ptrs. No problem if some are unneeded. */

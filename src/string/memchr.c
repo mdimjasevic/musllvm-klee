@@ -8,7 +8,7 @@
 #define HIGHS (ONES * (UCHAR_MAX/2+1))
 #define HASZERO(x) ((x)-ONES & ~(x) & HIGHS)
 
-void *memchr(const void *src, int c, size_t n)
+void *memchr_fast(const void *src, int c, size_t n)
 {
 	const unsigned char *s = src;
 	c = (unsigned char)c;
@@ -20,4 +20,17 @@ void *memchr(const void *src, int c, size_t n)
 		for (s = (const void *)w; n && *s != c; s++, n--);
 	}
 	return n ? (void *)s : 0;
+}
+
+void *memchr(const void *src, int c, size_t n)
+{
+  const unsigned char *s = src;
+  c = (unsigned char)c;
+  for (; ((uintptr_t)s & ALIGN) && n && *s != c; s++, n--);
+  if (n && *s != c) {
+    const size_t *w;
+    size_t k = ONES * c;
+    for (; n && *s != c; s++, n--);
+  }
+  return n ? (void *)s : 0;
 }
